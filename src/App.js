@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import Chars from "./components/Chars";
+import Navbar from "./components/Navbar";
+import CharInfo from "./components/CharInfo";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import { ThemeProvider } from '@mui/material/styles';
+import { Box } from "@mui/material";
+import { darkTheme, lightTheme } from "./Mode";
+import { GetCharContext } from "./Context/CharactersContext";
+import './App.css'
+import Favorites from "./components/Favorites";
+
+
+
 
 function App() {
+  const {mode} = GetCharContext()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={mode === 'light'? lightTheme : darkTheme}>
+    <Box sx={{backgroundColor: 'background.default', color:"text.primary",minHeight: "100vh"}}>
+    <BrowserRouter>
+    <Navbar/>
+          <Routes>
+            <Route path={'/'} element={<Chars/>}/>
+            <Route path={'/characters/:id'} element={<CharInfo/>}/>
+            <Route path={'/favorites'} element={<Favorites/>}/>
+          </Routes>
+    </BrowserRouter>
+    </Box>
+    </ThemeProvider>
+
   );
 }
 
